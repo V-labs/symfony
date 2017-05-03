@@ -25,13 +25,6 @@ namespace :symfony do
         symfony_console "cache:clear"
       end
     end
-
-    desc "Run app/console cache:warmup for the #{fetch(:symfony_env)} environment"
-    task :warmup do
-      on release_roles(:all) do
-        symfony_console "cache:warmup"
-      end
-    end
   end
 
   namespace :assets do
@@ -41,18 +34,6 @@ namespace :symfony do
         within release_path do
           symfony_console "assets:install", fetch(:assets_install_path) + ' ' + fetch(:assets_install_flags)
         end
-      end
-    end
-  end
-
-  desc "Create the cache directory"
-  task :create_cache_dir do
-    on release_roles :all do
-      within release_path do
-        if test "[ -d #{symfony_cache_path} ]"
-          execute :rm, "-rf", symfony_cache_path
-        end
-        execute :mkdir, "-pv", fetch(:cache_path)
       end
     end
   end
