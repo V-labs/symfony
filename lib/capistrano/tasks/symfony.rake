@@ -38,6 +38,18 @@ namespace :symfony do
     end
   end
 
+  desc "Create the cache directory"
+  task :create_cache_dir do
+    on release_roles :all do
+      within release_path do
+        if test "[ -d #{symfony_cache_path} ]"
+          execute :rm, "-rf", symfony_cache_path
+        end
+        execute :mkdir, "-pv", fetch(:cache_path)
+      end
+    end
+  end
+
   desc "Set user/group permissions on configured paths"
   task :set_permissions do
     on release_roles :all do
